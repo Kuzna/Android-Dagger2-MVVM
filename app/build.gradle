@@ -1,0 +1,92 @@
+apply plugin: 'com.android.application'
+apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'com.getkeepsafe.dexcount'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.1"
+    defaultConfig {
+        applicationId "cz.kuzna.android.mvvmdatabinding"
+        minSdkVersion 16
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+    lintOptions {
+        quiet true
+        abortOnError false
+        ignoreWarnings true
+    }
+    dataBinding {
+        enabled = true
+    }
+    testOptions.unitTests {
+        returnDefaultValues = true
+        all {
+            ignoreFailures = true
+            testLogging {
+                events 'passed', 'skipped', 'failed', 'standardOut', 'standardError'
+            }
+        }
+    }
+}
+
+dependencies {
+    def ext = rootProject.ext
+
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+
+    compile "com.android.support:appcompat-v7:$ext.supportLibraryVersion"
+    compile "com.android.support:recyclerview-v7:$ext.supportLibraryVersion"
+
+    // Butterknife
+    compile ("com.jakewharton:butterknife:$ext.butterKnifeVersion") {
+        exclude module: 'support-annotations'
+    }
+    apt "com.jakewharton:butterknife-compiler:$ext.butterKnifeVersion"
+
+    // Dagger 2
+    compile "com.google.dagger:dagger:$ext.daggerVersion"
+    apt "com.google.dagger:dagger-compiler:$ext.daggerVersion"
+
+    // Retrofit 2
+    compile ("com.squareup.retrofit2:retrofit:$ext.retrofitVersion") {
+        exclude module: 'okio'
+    }
+    compile "com.squareup.retrofit2:converter-gson:$ext.retrofitVersion"
+    compile "com.squareup.okhttp3:logging-interceptor:$ext.okHttpLoggingVersion"
+
+
+    // RxJava
+    compile "io.reactivex:rxandroid:$ext.rxAndroidVersion"
+    compile "io.reactivex:rxjava:$ext.rxJavaVersion"
+
+    // Logging
+    compile "com.jakewharton.timber:timber:$ext.timberVersion"
+
+    // Unit testing
+    testCompile "junit:junit:$ext.junitVersion"
+
+    testApt "com.google.dagger:dagger-compiler:$ext.daggerVersion"
+
+    testCompile "org.robolectric:robolectric:$ext.robolectricVersion"
+    testCompile ("com.squareup.okhttp:mockwebserver:$ext.mockWebServerVersion") {
+        exclude module: 'okio'
+    }
+
+    // Android testing
+    androidTestCompile("com.android.support.test.espresso:espresso-core:$ext.espressoVersion", {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+}

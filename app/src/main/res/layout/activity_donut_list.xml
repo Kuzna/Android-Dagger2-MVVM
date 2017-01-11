@@ -18,6 +18,5 @@
             android:layout_height="match_parent"
             android:clipToPadding="false"
             app:adapter="@{vm.adapter}"/>
-
     </RelativeLayout>
 </layout>

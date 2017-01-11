@@ -1,9 +1,7 @@
 package cz.kuzna.android.mvvmdatabinding.detail.ui;
 
 import android.os.Bundle;
-import android.view.View;
 
-import butterknife.OnClick;
 import cz.kuzna.android.core.inject.ComponentBuilderContainer;
 import cz.kuzna.android.mvvmdatabinding.R;
 import cz.kuzna.android.mvvmdatabinding.databinding.ActivityDonutDetailBinding;
@@ -18,8 +16,6 @@ public class DonutDetailActivity extends D2MvvmActivity<ActivityDonutDetailBindi
 
     public static final String EXTRA_DONUT_ID = "ext_donut_id";
 
-    private int donutId;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,7 +23,8 @@ public class DonutDetailActivity extends D2MvvmActivity<ActivityDonutDetailBindi
         setAndBindContentView(R.layout.activity_donut_detail);
 
         if(getIntent() != null && getIntent().hasExtra(EXTRA_DONUT_ID)) {
-            donutId = getIntent().getIntExtra(EXTRA_DONUT_ID, -1);
+            final int donutId = getIntent().getIntExtra(EXTRA_DONUT_ID, -1);
+            getViewModel().update(donutId);
         }
     }
 
@@ -42,11 +39,6 @@ public class DonutDetailActivity extends D2MvvmActivity<ActivityDonutDetailBindi
     @Override
     protected void onResume() {
         super.onResume();
-        getViewModel().loadData(donutId);
-    }
-
-    @OnClick(R.id.btn_order_now)
-    public void onClickOrderNow(final View view) {
-        getViewModel().clickedOrderNow(donutId);
+        getViewModel().loadData(getViewModel().getDonutId());
     }
 }

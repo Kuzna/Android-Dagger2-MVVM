@@ -3,7 +3,9 @@ package cz.kuzna.android.mvvmdatabinding.detail.ui;
 import android.content.Context;
 import android.databinding.ObservableField;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
+import android.view.View;
 
 import javax.inject.Inject;
 
@@ -26,6 +28,7 @@ public class DonutDetailViewModel extends BaseViewModel {
     private OrderController orderController;
     private ToastController toastController;
     private Context context;
+    private int donutId;
 
     @Inject
     public DonutDetailViewModel(Context context, final OrderController orderController,
@@ -87,7 +90,15 @@ public class DonutDetailViewModel extends BaseViewModel {
         }
     }
 
-    public void clickedOrderNow(final int donutId) {
+    public void update(final int donutId) {
+        this.donutId = donutId;
+    }
+
+    public int getDonutId() {
+        return this.donutId;
+    }
+
+    public void onClickOrderNow(@NonNull final View view) {
         this.orderController.order(donutId).subscribe(new Action1<Boolean>() {
             @Override
             public void call(final Boolean result) {

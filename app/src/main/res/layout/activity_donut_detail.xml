@@ -43,7 +43,8 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Button"
             android:textColor="@android:color/white"
             android:layout_centerHorizontal="true"
-            style="@style/Widget.AppCompat.Button.Colored" />
+            android:onClick="@{vm.onClickOrderNow}"
+            style="@style/Widget.AppCompat.Button.Colored"/>
 
     </RelativeLayout>
 </layout>
